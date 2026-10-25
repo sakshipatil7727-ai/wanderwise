@@ -158,6 +158,7 @@ function showPrivacy(){showPage('about');setTimeout(()=>{let el=document.getElem
    UPI payments go to upiNumber and are verified manually using the UTR the customer enters.
    Card details are never collected. Optional: paste a Razorpay Key ID for gateway payments. */
 const PAYMENT_CONFIG={razorpayKeyId:'rzp_test_1DP5mmOlF5G5ag',merchantName:'WanderWise Travel',currency:'INR',upiNumber:'7666114612',upiId:''};
+const BACKEND_URL="https://wanderwise-backend.onrender.com";
 const ADMIN_EMAIL='admin@wanderwise.in',ADMIN_HASH='7ce1c5aaf33ce3087ebb14d413a42cf3be081d26c94747fd8caf053d1ba28b3d';
 function paymentLines(item){let p=item.payment;if(!p)return '<p><b>Payment:</b> No payment was processed.</p>';if(p.pending)return '<p><b>Payment:</b> '+money(p.amount)+' via UPI · UTR '+esc(p.txnId)+' · awaiting verification</p>';if(p.paid)return '<p><b>Payment:</b> Paid '+money(p.amount)+' via '+esc(p.method)+(p.detail?' ('+esc(p.detail)+')':'')+'</p><p><b>Transaction ID:</b> <code>'+esc(p.txnId)+'</code></p>';return '<p><b>Payment:</b> Pay at venue · '+money(p.amount)+' due</p>'}
 function openPayment(item){state.pending=item;document.getElementById('modalTitle').textContent='Complete your payment';document.getElementById('modalBody').innerHTML='<div class="booking-detail" style="margin-top:0"><b>'+esc(item.name)+'</b><p>'+item.people+' traveller'+(item.people===1?'':'s')+' · '+esc(item.date)+'</p><div class="paytotal"><span>Amount payable (incl. 5% tax)</span><strong>'+money(item.total)+'</strong></div></div><div class="paymethods" id="payMethods"></div><div id="payPanel"></div><div style="text-align:center;margin-top:8px"><button type="button" class="textbtn" onclick="closeModal()">Cancel</button></div><p class="paynote" style="text-align:center">Secure payment processing powered by Razorpay & WanderWise.</p>';payMethod('razorpay');openModal()}
@@ -182,8 +183,10 @@ let apiBase='';
 if(window.location.protocol==='http:'||window.location.protocol==='https:'){
     if(window.location.port==='5000'){
         apiBase='';
+    } else if(window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1'){
+        apiBase=window.location.protocol+'//'+window.location.hostname+':5000';
     } else {
-        apiBase=window.location.protocol+'//'+(window.location.hostname||'localhost')+':5000';
+        apiBase=BACKEND_URL||'';
     }
 } else {
     apiBase='http://localhost:5000';
