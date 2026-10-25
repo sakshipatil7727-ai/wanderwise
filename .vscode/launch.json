@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Start WanderWise Backend (Port 5000)",
+            "skipFiles": ["<node_internals>/**"],
+            "program": "${workspaceFolder}/wanderwise-backend/server.js",
+            "cwd": "${workspaceFolder}/wanderwise-backend",
+            "restart": true,
+            "console": "integratedTerminal"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome against WanderWise (localhost:5000)",
+            "url": "http://localhost:5000",
+            "webRoot": "${workspaceFolder}"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Full Stack (Backend + Chrome)",
+            "configurations": [
+                "Start WanderWise Backend (Port 5000)",
+                "Launch Chrome against WanderWise (localhost:5000)"
+            ]
+        }
+    ]
+}
